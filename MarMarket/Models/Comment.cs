@@ -14,6 +14,7 @@ namespace MarMarket.Models
 
         public virtual User Author { get; set; }
 
+        public virtual Product Product { get; set; }
 
     }
 }

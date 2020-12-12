@@ -1,0 +1,49 @@
+﻿@model ProductDetailViewModel
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<section class="content-item" id="comments">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8">
+                @{
+                    if (User.Identity.IsAuthenticated) {
+                                <form>
+                                    <h3 class="pull-left"></h3>
+                                    <fieldset>
+                                        <div class="row">
+
+                                            <div class="form-group col-xs-12 col-sm-9 col-lg-10">
+                                                <textarea class="form-control" id="message" placeholder="Ваше сообщение" required=""></textarea>
+                                            </div>
+
+                                        </div>
+
+                                    </fieldset>
+                                    <button type="submit" class="btn btn-normal pull-left"></button>
+
+                                </form>
+                        }
+                    }
+
+                        <h3 class="mt-4">Комментарии</h3>
+                        @{
+                            foreach (Comment comment in Model.comments)
+                            {
+                                <div class="media">
+                                    <a class="pull-left" href="#"><img class="media-object" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""></a>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">@comment.Author.Login</h4>
+                                        <p>@comment.Text</p>
+                                        <ul class="list-unstyled list-inline media-detail pull-left">
+                                            <li><i class="fa fa-calendar"></i>@comment.Date</li>
+
+                                        </ul>
+
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+        </div>
+    </div>
+</section>

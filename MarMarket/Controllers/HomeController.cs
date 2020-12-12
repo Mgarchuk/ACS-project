@@ -6,32 +6,24 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MarMarket.Models;
+using MarMarket.Core.Interfaces;
 
 namespace MarMarket.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ICategories categories;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ICategories categories)
         {
-            _logger = logger;
+            this.categories = categories;
         }
 
         public IActionResult Index()
         {
-            return View();
+            HomeModel home = new HomeModel(categories.GetCategories);
+            return View(home);
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }

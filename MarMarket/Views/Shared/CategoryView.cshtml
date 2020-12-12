@@ -1,0 +1,11 @@
+﻿@model Category
+
+<div class="col-lg-4">
+    <div class="obj">
+        <img class="obj__image" style="max-width: 250px" src="@Model.Image" alt="@Model.Name" />
+    </div>
+    <p style="max-width: 250px; height: 50px">@Model.Description</p>
+    
+    <p><a class="btn btn-primary btn-lg nav-link" href="/Products/Index/@Model.Id" style="width: 250px">Перейти</a></p>
+    
+</div>

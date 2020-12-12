@@ -1,0 +1,11 @@
+﻿@model Product
+
+<div class="col-lg-4">
+    <div class="obj">
+        <img class="obj__image" style="max-width: 250px" src="@Model.ImageUrl" alt="@Model.Title" />
+    </div>
+    <h2>@Model.Title</h2>
+    <p>@Model.Description</p>
+    <p>Цена: @Model.Price.ToString("c")</p>
+    <p><a class="btn btn-warning btn-lg nav-link" href="/ProductDetail/Index/@Model.Id" style="width: 250px">Подробная информация</a></p>
+</div>

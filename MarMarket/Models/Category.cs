@@ -14,6 +14,7 @@ namespace MarMarket.Models
         public string Description { get; set; }
 
         public List<Product> Products { get; set; }
+        public String Image { get; set; }
 
     }
 }
