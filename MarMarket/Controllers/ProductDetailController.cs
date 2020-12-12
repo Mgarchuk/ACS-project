@@ -12,11 +12,31 @@ namespace MarMarket.Controllers
     {
         private readonly IComments comments;
         private readonly IProducts products;
-      
-        public ProductDetailController(IComments comments, IProducts products)
+        private readonly IUsers users;
+
+        public ProductDetailController(IComments comments, IProducts products, IUsers users)
         {
             this.comments = comments;
             this.products = products;
+            this.users = users;
+          
+        }
+
+        [HttpPost]
+        public IActionResult Checkout(ProductDetailViewModel model)
+        {
+
+            var userName = User.Identity.Name;
+            User currentUser = users.GetUsers.Where(user => user.Login == userName).FirstOrDefault();
+            
+            comments.CreateComment(new Comment() {
+                Text = model.CommentText, 
+                Product = products.GetProductById(model.ProductId),
+                Date = DateTime.Now,
+                Author = currentUser
+            });
+            
+            return Redirect($"/ProductDetail/Index/{model.ProductId}");
           
         }
 
@@ -40,7 +60,7 @@ namespace MarMarket.Controllers
             }
 
             Product product = products.GetProductById(productId); 
-            ProductDetailViewModel model = new ProductDetailViewModel(product, comments.GetCommentsByProduct(productId));
+            ProductDetailViewModel model = new ProductDetailViewModel(product, comments.GetCommentsByProduct(productId), productId);
             return View(model);
         }
     }
