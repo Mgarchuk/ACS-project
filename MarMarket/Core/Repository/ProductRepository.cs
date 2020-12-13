@@ -26,5 +26,15 @@ namespace MarMarket.Core.Repository
         {
             return appDBContent.Products.FirstOrDefault(product => product.Id == id);
         }
+
+        public void DeleteProduct(int id)
+        {
+            var product = GetProductById(id);
+            if (product == null) return;
+            appDBContent.Remove(product);
+            appDBContent.SaveChanges();
+        }
+
+      
     }
 }

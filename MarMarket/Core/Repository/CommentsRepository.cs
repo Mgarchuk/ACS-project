@@ -36,5 +36,19 @@ namespace MarMarket.Core.Repository
             }) ;
             appDBContent.SaveChanges();
         }
+
+        public Comment GetCommentById(int id)
+        {
+            return appDBContent.Comments.FirstOrDefault(product => product.Id == id);
+        }
+
+        public void DeleteComment(int id)
+        {
+            var comment = GetCommentById(id);
+            if (comment == null) return;
+             
+            appDBContent.Comments.Remove(comment);
+            appDBContent.SaveChanges();
+        }
     }
 }

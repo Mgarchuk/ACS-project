@@ -12,7 +12,7 @@ namespace MarMarket.Core.Interfaces
         IEnumerable<Product> GetProductsByCategory(int categoryId);
         Product GetProductById(int id);
 
-
+        void DeleteProduct(int id);
 
     }
 }

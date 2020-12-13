@@ -51,7 +51,7 @@ namespace MarMarket.Controllers
                         {
                             new Claim(ClaimTypes.Name, user.Login),
                             new Claim(ClaimTypes.Email, user.Email),
-                            new Claim(ClaimTypes.Role, "User"),
+                            new Claim(ClaimTypes.Role, user.Role),
                         };
 
                         await HttpContext.SignOutAsync();

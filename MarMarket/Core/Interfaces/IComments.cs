@@ -11,6 +11,10 @@ namespace MarMarket.Core.Interfaces
         IEnumerable<Comment> GetComments { get; }
         IEnumerable<Comment> GetCommentsByProduct(int productId);
 
+        Comment GetCommentById(int id);
+
         void CreateComment(Comment comment);
+
+        void DeleteComment(int id);
     }
 }

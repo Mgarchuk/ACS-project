@@ -23,12 +23,19 @@ namespace MarMarket.Controllers
         }
 
         [HttpPost]
+        public IActionResult DeleteComment(ProductDetailViewModel model)
+        {
+            comments.DeleteComment(model.CommentId); 
+            return Redirect($"/ProductDetail/Index/{model.ProductId}");
+
+        }
+
+        [HttpPost]
         public IActionResult Checkout(ProductDetailViewModel model)
         {
 
             var userName = User.Identity.Name;
             User currentUser = users.GetUsers.Where(user => user.Login == userName).FirstOrDefault();
-            
             comments.CreateComment(new Comment() {
                 Text = model.CommentText, 
                 Product = products.GetProductById(model.ProductId),

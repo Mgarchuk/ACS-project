@@ -13,6 +13,7 @@ namespace MarMarket.Models
         public string CommentText { get; set; }
         public int ProductId { get; set; }
 
+        public int CommentId { get; set; }
         public ProductDetailViewModel()
         {
 

@@ -23,15 +23,18 @@
 
                                     </fieldset>
                                     <button type="submit" class="btn btn-normal pull-left">Отправить</button>
+                                    
 
                                 </form>
                         }
                     }
 
-                        <h3 class="mt-4">Комментарии</h3>
+                        <h3 class="mt-5">Комментарии</h3>
                         @{
+                
                             foreach (Comment comment in Model.comments)
                             {
+    
                                 <div class="media">
                                     <a class="pull-left" href="#"><img class="media-object" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""></a>
                                     <div class="media-body">
@@ -41,8 +44,17 @@
                                             <li><i class="fa fa-calendar"></i>@comment.Date</li>
 
                                         </ul>
+                                        @{
+                                        if (@comment.Author.Login == User.Identity.Name || User.IsInRole("admin")) {
+                                            <form asp-action="DeleteComment">
+                                                <input type="hidden" name="CommentId" value="@comment.Id" />
+                                                <input type="hidden" name="ProductId" value="@Model.ProductId" />
+                                                <button type="submit" class="btn btn-danger pull-right">Удалить</button>
+                                            </form>
+                                            }
+                                        }
 
-                                    </div>
+                                        </div>
                                 </div>
                             }
                         }
