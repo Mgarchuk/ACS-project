@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MarMarket.Core.Interfaces;
 using MarMarket.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace MarMarket.Controllers
 {
@@ -13,19 +14,29 @@ namespace MarMarket.Controllers
         private readonly IComments comments;
         private readonly IProducts products;
         private readonly IUsers users;
-
-        public ProductDetailController(IComments comments, IProducts products, IUsers users)
+        private readonly IHubContext<CommentHub> hub;
+        public ProductDetailController(IComments comments, IProducts products, IUsers users, IHubContext<CommentHub> hub)
         {
             this.comments = comments;
             this.products = products;
             this.users = users;
+            this.hub = hub;
           
         }
 
         [HttpPost]
         public IActionResult DeleteComment(ProductDetailViewModel model)
         {
-            comments.DeleteComment(model.CommentId); 
+            var userName = User.Identity.Name;
+            User currentUser = users.GetUsers.Where(user => user.Login == userName).FirstOrDefault();
+            Comment comment = comments.GetCommentById(model.CommentId);
+
+            bool badUser = userName == null || comment == null || (currentUser.Role == "user" && currentUser.Id != comment.Author.Id);
+            if (!badUser)
+            {
+                comments.DeleteComment(model.CommentId);
+            } 
+
             return Redirect($"/ProductDetail/Index/{model.ProductId}");
 
         }
@@ -36,12 +47,13 @@ namespace MarMarket.Controllers
 
             var userName = User.Identity.Name;
             User currentUser = users.GetUsers.Where(user => user.Login == userName).FirstOrDefault();
-            comments.CreateComment(new Comment() {
+            var NewComment = comments.CreateComment(new Comment() {
                 Text = model.CommentText, 
                 Product = products.GetProductById(model.ProductId),
                 Date = DateTime.Now,
                 Author = currentUser
             });
+            hub.Clients.All.SendAsync("HubEvent", NewComment);
             
             return Redirect($"/ProductDetail/Index/{model.ProductId}");
           

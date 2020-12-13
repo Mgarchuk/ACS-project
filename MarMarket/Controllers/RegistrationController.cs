@@ -55,26 +55,34 @@ namespace MarMarket.Controllers
                 }
                 else
                 {
-                    users.CreateUser(model);
-                    User user = users.GetUser(model.Login);
+                    try
+                    {
+                        await SendEmailAsync(model.Email, "Завершение регистрации", "Вы успешно зарегистрировались на сайте");
+                        users.CreateUser(model);
+                        User user = users.GetUser(model.Login);
 
-                    var claims = new List<Claim>()
+                        var claims = new List<Claim>()
                     {
                         new Claim(ClaimTypes.Name, user.Login),
                         new Claim(ClaimTypes.Email, user.Email),
                         new Claim(ClaimTypes.Role, "User"),
                     };
 
-                    await HttpContext.SignOutAsync();
+                        await HttpContext.SignOutAsync();
 
-                    var claimIndentity = new ClaimsIdentity(claims, "Claims");
-                    var userPrincipal = new ClaimsPrincipal(new[] { claimIndentity });
+                        var claimIndentity = new ClaimsIdentity(claims, "Claims");
+                        var userPrincipal = new ClaimsPrincipal(new[] { claimIndentity });
 
-                    await HttpContext.SignInAsync(userPrincipal);
-                    await SendEmailAsync(user.Email, "Завершение регистрации", "Вы успешно зарегистрировались на сайте"); ;
+                        await HttpContext.SignInAsync(userPrincipal);
 
-                    ViewBag.message = "Успешная регистрация.";
-                    return Redirect("/Home/Index");
+                        ViewBag.message = "Успешная регистрация.";
+                        return Redirect("/Home/Index");
+                    }
+                    catch (Exception e)
+                    {
+                        ModelState.AddModelError("wrong", "Неккоректный email");
+                    }
+                    
                 }
             } 
 

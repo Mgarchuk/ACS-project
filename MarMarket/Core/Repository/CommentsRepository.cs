@@ -21,20 +21,20 @@ namespace MarMarket.Core.Repository
         public IEnumerable<Comment> GetCommentsByProduct(int productId)
         {
             return appDBContent.Comments.Include(comment => comment.Product).Include(comment => comment.Author).Where(comment => comment.Product.Id == productId).ToList();
-        }
+        }      
 
-      
-
-        public void CreateComment(Comment comment)
+        public Comment CreateComment(Comment comment)
         {
-            appDBContent.Comments.Add(new Comment()
+            var NewComment = appDBContent.Comments.Add(new Comment()
             {
                 Text = comment.Text,
                 Date = DateTime.Now,
                 Author = comment.Author,
                 Product = comment.Product
-            }) ;
+            }).Entity;
+
             appDBContent.SaveChanges();
+            return NewComment;
         }
 
         public Comment GetCommentById(int id)

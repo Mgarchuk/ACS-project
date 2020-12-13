@@ -1,10 +1,12 @@
 ﻿@model ProductsViewModel
 
-<div class="row mt-5 mb-2">
-    @{
-        foreach (Product product in Model.products)
-        {
-            @Html.Partial("ProductView", product)
+    <div class="row mt-5 mb-2">
+        @{
+            foreach (Product product in Model.products)
+            {
+                @Html.Partial("ProductView", product)
+            }
         }
-    }
-</div>
+
+       
+    </div>

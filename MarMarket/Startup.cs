@@ -15,6 +15,7 @@ using MarMarket.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using MarMarket.Models;
 
 namespace MarMarket
 {
@@ -30,6 +31,7 @@ namespace MarMarket
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSignalR();
             services.AddDbContext<AppDBContent>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient<IProducts, ProductRepository>();
             services.AddTransient<IUsers, UsersRepository>();
@@ -67,6 +69,7 @@ namespace MarMarket
 
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseRouting();
 
             app.UseDeveloperExceptionPage();
             app.UseStatusCodePages();
@@ -78,6 +81,10 @@ namespace MarMarket
                 routes.MapRoute(name: "deffault", template: "{controller=Home}/{action=Index}");
             });
 
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHub<CommentHub>("/CommentHub");
+            });
        
         }
     }

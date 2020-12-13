@@ -13,7 +13,7 @@ namespace MarMarket.Core.Interfaces
 
         Comment GetCommentById(int id);
 
-        void CreateComment(Comment comment);
+        Comment CreateComment(Comment comment);
 
         void DeleteComment(int id);
     }
